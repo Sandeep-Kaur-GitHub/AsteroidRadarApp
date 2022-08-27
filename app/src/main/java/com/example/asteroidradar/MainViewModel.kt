@@ -1,9 +1,12 @@
 package com.example.asteroidradar
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.asteroidradar.network.NeoAPI
+import com.example.asteroidradar.network.NeoJSONData
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,12 +21,11 @@ class MainViewModel : ViewModel() {
     }
 
     private fun getNeoWSProperties() {
-        NeoAPI.retrofitService.getProperties().enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                _response.value = response.body()
+        NeoAPI.retrofitService.getProperties().enqueue(object : Callback<List<NeoJSONData>> {
+            override fun onResponse(call: Call<List<NeoJSONData>>, response: Response<List<NeoJSONData>>) {
+                _response.value = response.toString()
             }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<List<NeoJSONData>>, t: Throwable) {
                 _response.value = "Failure: " + t.message
             }
 

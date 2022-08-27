@@ -1,6 +1,7 @@
 buildscript {
     ext{
         version_retrofit = "2.9.0"
+        version_moshi = "1.13.0"
     }
 }
 
@@ -51,4 +52,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
+    implementation "com.squareup.moshi:moshi:$version_moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 }
