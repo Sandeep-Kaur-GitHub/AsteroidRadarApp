@@ -13,5 +13,5 @@ interface NeoJsonDao {
 
     @Query("SELECT * FROM Neo_json_data_table")
     fun getAllNights(): LiveData<List<NeoJSONData>>
-    
+
 }
