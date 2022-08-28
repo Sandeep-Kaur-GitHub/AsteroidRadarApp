@@ -1,6 +1,5 @@
 package com.example.asteroidradar
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +8,7 @@ import com.example.asteroidradar.network.NeoJSONData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlin.collections.ArrayList
 
 class MainViewModel : ViewModel() {
     private val _response = MutableLiveData<String>()
@@ -26,19 +23,31 @@ class MainViewModel : ViewModel() {
         GlobalScope.launch {
             val stringResponse = NeoAPI.retrofitService.getProperties()
             val parsedResponse = parseAsteroidsJsonResult(JSONObject(stringResponse))
-            _response.postValue(parsedResponse.size.toString())
+
+         /*   var a=ArrayList<String>()
+            for(i in 0 until parsedResponse.size) {
+                a.add("CODENAME"+parsedResponse.get(i).codename+"\n")
+                a.add("ABSOLUTE MAG"+parsedResponse.get(i).absoluteMagnitude.toString()+"\n")
+                a.add("ID"+parsedResponse.get(i).id.toString()+"\n")
+            }*/
+
+            _response.postValue(parsedResponse.toString())
         }
     }
 }
-fun parseAsteroidsJsonResult(jsonObject: JSONObject): List<NeoJSONData> {
-    val asteroidList = mutableListOf<NeoJSONData>()
-    val nearEarthObjectsJson = jsonObject.getJSONObject("near_earth_objects")
-    val dateList = nearEarthObjectsJson.keys()
-    val dateListSorted = dateList.asSequence().sorted()
-    dateListSorted.forEach {
-        val key: String = it
-        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(key)
-        asteroidList.add(NeoJSONData(element_count = dateAsteroidJsonArray.length()))
-    }
+
+fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<NeoJSONData> {
+    val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
+    val asteroidList = ArrayList<NeoJSONData>()
+            val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2015-09-08")
+        for(i in 0 until dateAsteroidJsonArray.length()) {
+            val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
+            val id = asteroidJson.getLong("id")
+            val codename = asteroidJson.getString("name")
+            val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
+            val asteroid = NeoJSONData(id, codename, absoluteMagnitude)
+            asteroidList.add(asteroid)
+        }
     return asteroidList
 }
+
