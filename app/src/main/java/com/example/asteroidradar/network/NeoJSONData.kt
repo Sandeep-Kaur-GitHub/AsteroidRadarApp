@@ -10,7 +10,7 @@ data class NeoJSONData(
 
     @ColumnInfo(name="Neo_codename")
     val codename: String,
-    
+
     @ColumnInfo(name="Neo_absoluteMagnitude")
     val absoluteMagnitude: Double
     )
