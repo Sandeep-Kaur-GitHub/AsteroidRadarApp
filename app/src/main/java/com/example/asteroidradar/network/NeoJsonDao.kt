@@ -12,6 +12,6 @@ interface NeoJsonDao {
     suspend fun insert(NeoAsteroid:NeoJSONData)
 
     @Query("SELECT * FROM Neo_json_data_table")
-    fun getAllNights(): LiveData<List<NeoJSONData>>
+    fun getAllAsteroids(): LiveData<List<NeoJSONData>>
 
 }
