@@ -18,10 +18,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        val adapter = NeoDataAdapter()
+        binding.recyclerView.adapter=adapter
+
         viewModel.allData.observe(this, Observer {
-            for (i in it.indices) {
+           /* for (i in it.indices) {
                 Log.i("sar", "" + it[i].id + it[i].codename)
+            }*/
+            it.let {
+                adapter.data=it
             }
+
+
         })
         super.onCreate(savedInstanceState)
     }
