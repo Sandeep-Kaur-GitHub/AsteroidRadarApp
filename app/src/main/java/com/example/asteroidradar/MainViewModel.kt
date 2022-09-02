@@ -11,8 +11,11 @@ import androidx.lifecycle.ViewModel
 import com.example.asteroidradar.network.NeoAPI
 import com.example.asteroidradar.network.NeoDatabase
 import com.example.asteroidradar.network.NeoJSONData
+import com.example.asteroidradar.network.PictureOfTheDay
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.get
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 
@@ -22,6 +25,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val response: LiveData<String>
         get() = _response
 
+    private val _resImg = MutableLiveData<PictureOfTheDay>()
+    val resImg: LiveData<PictureOfTheDay>
+        get() = _resImg
+
     private val database by lazy {
         NeoDatabase.getInstance(application)
     }
@@ -29,6 +36,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         getNeoWSProperties()
+        getImageOfTheDay()
     }
 
     private fun getNeoWSProperties() {
@@ -41,20 +49,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _response.postValue(parsedResponse.toString())
         }
     }
-}
+    private fun  getImageOfTheDay(){
+        GlobalScope.launch {
 
-fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<NeoJSONData> {
-    val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
-    val asteroidList = ArrayList<NeoJSONData>()
-    val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2015-09-08")
-    for (i in 0 until dateAsteroidJsonArray.length()) {
-        val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
-        val id = asteroidJson.getLong("id")
-        val codename = asteroidJson.getString("name")
-        val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
-        val asteroid = NeoJSONData(id, codename, absoluteMagnitude)
-        asteroidList.add(asteroid)
+            val ImageResponse= NeoAPI.retrofitService.getImageOfTheDay()
+            val imgUrl =ImageResponse.url
+            val imgDes=ImageResponse.title
+            val imgMedia=ImageResponse.mediaType
+            val imgDataclass= PictureOfTheDay(imgMedia,imgDes,imgUrl)
+            _resImg.postValue(imgDataclass)
+        }
     }
-    return asteroidList
+
+    fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<NeoJSONData> {
+        val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
+        val asteroidList = ArrayList<NeoJSONData>()
+        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2015-09-08")
+        for (i in 0 until dateAsteroidJsonArray.length()) {
+            val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
+            val id = asteroidJson.getLong("id")
+            val codename = asteroidJson.getString("name")
+            val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
+            val asteroid = NeoJSONData(id, codename, absoluteMagnitude)
+            asteroidList.add(asteroid)
+        }
+        return asteroidList
+    }
 }
 

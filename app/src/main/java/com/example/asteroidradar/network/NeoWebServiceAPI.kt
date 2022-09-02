@@ -1,12 +1,16 @@
 package com.example.asteroidradar.network
 
+import android.widget.ImageView
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.squareup.picasso.Picasso
+import okhttp3.HttpUrl.get
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import java.lang.reflect.Array.get
 
 private const val BASE_URL="https://api.nasa.gov/"
 //https://api.nasa.gov/planetary/apod?api_key=bgMTgQKJ4yIVgrQC9Y49CSI1EvLRktWce4USTeXC
@@ -18,9 +22,14 @@ private val retrofit= Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
+
+
 interface NeoWebServiceAPI{
     @GET("neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY")
     suspend fun getProperties(): String
+
+    @GET("planetary/apod?api_key=bgMTgQKJ4yIVgrQC9Y49CSI1EvLRktWce4USTeXC")
+    suspend fun getImageOfTheDay():PictureOfTheDay
 }
 object NeoAPI{
     val retrofitService : NeoWebServiceAPI by lazy {

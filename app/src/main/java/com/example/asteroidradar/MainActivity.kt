@@ -9,6 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.asteroidradar.databinding.ActivityMainBinding
+import com.example.asteroidradar.network.NeoAPI
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,20 +22,21 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
         val adapter = NeoDataAdapter()
-        binding.recyclerView.adapter=adapter
-
+        binding.recyclerView.adapter = adapter
         viewModel.allData.observe(this, Observer {
-           /* for (i in it.indices) {
-                Log.i("sar", "" + it[i].id + it[i].codename)
-            }*/
             it.let {
-                adapter.data=it
+                adapter.data = it
             }
-
-
+   })
+        viewModel.resImg.observe(this, Observer {
+            Log.i("jas", "" + it.url)
+            Picasso.with(this)
+                .load(it.url)
+                .into(binding.imageView)
         })
+
         super.onCreate(savedInstanceState)
     }
+
 }
