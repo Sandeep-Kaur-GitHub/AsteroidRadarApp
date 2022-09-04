@@ -64,13 +64,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<NeoJSONData> {
         val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
         val asteroidList = ArrayList<NeoJSONData>()
-        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2015-09-08")
+        val key = nearEarthObjectsJson.keys().iterator().next()
+        Log.i("Datekeyyy", "" + key)
+        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2022-09-02")
         for (i in 0 until dateAsteroidJsonArray.length()) {
             val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
             val id = asteroidJson.getLong("id")
             val codename = asteroidJson.getString("name")
             val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
-            val asteroid = NeoJSONData(id, codename, absoluteMagnitude)
+            val hazardous = asteroidJson.getBoolean("is_potentially_hazardous_asteroid")
+            val asteroid = NeoJSONData(id,key,codename, absoluteMagnitude,hazardous)
             asteroidList.add(asteroid)
         }
         return asteroidList

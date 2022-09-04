@@ -6,21 +6,37 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/id_text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/codename_text_view"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="gravity"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/codename_text_view"
+        android:id="@+id/date_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
         android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/codename_text_view"
+        app:layout_constraintStart_toStartOf="@+id/codename_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/codename_text_view" />
+
+    <ImageView
+        android:id="@+id/emoji_imageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_text_view" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

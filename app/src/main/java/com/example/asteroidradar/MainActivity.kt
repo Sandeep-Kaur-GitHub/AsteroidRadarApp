@@ -13,6 +13,8 @@ import com.example.asteroidradar.network.NeoAPI
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -24,13 +26,14 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         val adapter = NeoDataAdapter()
         binding.recyclerView.adapter = adapter
+
         viewModel.allData.observe(this, Observer {
             it.let {
                 adapter.data = it
             }
    })
         viewModel.resImg.observe(this, Observer {
-            Log.i("jas", "" + it.url)
+
             Picasso.with(this)
                 .load(it.url)
                 .into(binding.imageView)
