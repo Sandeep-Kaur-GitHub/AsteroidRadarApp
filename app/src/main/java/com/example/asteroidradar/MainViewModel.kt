@@ -69,6 +69,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2022-09-02")
         for (i in 0 until dateAsteroidJsonArray.length()) {
             val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
+
+            val estimatedDiameter= asteroidJson.getJSONObject("estimated_diameter")
+            val DiameterInKilometer= estimatedDiameter.getJSONObject("kilometers")
+            val maxDiameter= DiameterInKilometer.getDouble("estimated_diameter_max")
+            Log.i("he",""+maxDiameter)
+
             val id = asteroidJson.getLong("id")
             val codename = asteroidJson.getString("name")
             val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")

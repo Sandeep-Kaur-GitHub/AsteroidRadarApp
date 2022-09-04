@@ -1,8 +1,10 @@
 package com.example.asteroidradar
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -16,7 +18,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),NeoDataAdapter.OnItemClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        val adapter = NeoDataAdapter()
+        val adapter = NeoDataAdapter(this)
         binding.recyclerView.adapter = adapter
 
         viewModel.allData.observe(this, Observer {
@@ -40,6 +42,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onItemClick(position: Int) {
+        intent = Intent(applicationContext, detail::class.java)
+        startActivity(intent)
+        Toast.makeText(this,"helloo $position is clicked",Toast.LENGTH_LONG).show()
     }
 
 }

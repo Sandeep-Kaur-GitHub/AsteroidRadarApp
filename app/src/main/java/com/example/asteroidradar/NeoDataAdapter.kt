@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asteroidradar.network.NeoJSONData
 
 
-class NeoDataAdapter:RecyclerView.Adapter<NeoDataAdapter.ViewHolder>()
+class NeoDataAdapter(private val listener:OnItemClickListener):RecyclerView.Adapter<NeoDataAdapter.ViewHolder>()
 {
+
     var data= listOf<NeoJSONData>()
     set(value) {
         field=value
@@ -21,6 +23,7 @@ class NeoDataAdapter:RecyclerView.Adapter<NeoDataAdapter.ViewHolder>()
     override fun getItemCount() = data.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
+
         holder.date_text_view.text=item.keyOfDate
         holder.code_text_view.text=item.codename
         if (item.is_potentially_hazardous_asteroid)
@@ -39,13 +42,25 @@ class NeoDataAdapter:RecyclerView.Adapter<NeoDataAdapter.ViewHolder>()
         return ViewHolder(view)
 
     }
-    //class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)
-    class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
-    {
-        val code_text_view:TextView=itemView.findViewById(R.id.codename_text_view)
-        val date_text_view:TextView= itemView.findViewById(R.id.date_text_view)
-        val image:ImageView=itemView.findViewById(R.id.emoji_imageView)
+   inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView),View.OnClickListener {
+        val code_text_view: TextView = itemView.findViewById(R.id.codename_text_view)
+        val date_text_view: TextView = itemView.findViewById(R.id.date_text_view)
+        val image: ImageView = itemView.findViewById(R.id.emoji_imageView)
 
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            val position:Int=adapterPosition
+            if (position!=RecyclerView.NO_POSITION)
+            {
+                listener.onItemClick(position)
+            }
+
+        }
     }
-
+interface OnItemClickListener{
+    fun onItemClick(position: Int)
+}
 }
