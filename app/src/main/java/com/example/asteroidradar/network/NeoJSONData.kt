@@ -21,7 +21,16 @@ data class NeoJSONData(
     val absoluteMagnitude: Double,
 
     @ColumnInfo(name="is_potentially_hazardous_asteroid")
-    val is_potentially_hazardous_asteroid:Boolean
+    val is_potentially_hazardous_asteroid:Boolean,
+
+    @ColumnInfo(name="max_diameter")
+    val max_diameter:Double,
+
+    @ColumnInfo(name="relative_velocity")
+    val relative_velocity:String,
+
+    @ColumnInfo(name = "distance_from_earth")
+    val distance_from_earth:String
     )
 
 data class PictureOfTheDay

@@ -65,21 +65,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
         val asteroidList = ArrayList<NeoJSONData>()
         val key = nearEarthObjectsJson.keys().iterator().next()
-        Log.i("Datekeyyy", "" + key)
+
         val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray("2022-09-02")
         for (i in 0 until dateAsteroidJsonArray.length()) {
             val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
 
             val estimatedDiameter= asteroidJson.getJSONObject("estimated_diameter")
-            val DiameterInKilometer= estimatedDiameter.getJSONObject("kilometers")
-            val maxDiameter= DiameterInKilometer.getDouble("estimated_diameter_max")
-            Log.i("he",""+maxDiameter)
+            val diameterInKilometer= estimatedDiameter.getJSONObject("kilometers")
+            val maxDiameter= diameterInKilometer.getDouble("estimated_diameter_max")
+
+            val close_approach_data=asteroidJson.getJSONArray("close_approach_data")
+            val relative_velocity= close_approach_data.getJSONObject(0).getJSONObject("relative_velocity").getString("kilometers_per_second")
+            val distance_from_earth=close_approach_data.getJSONObject(0).getJSONObject("miss_distance").getString("astronomical")
 
             val id = asteroidJson.getLong("id")
             val codename = asteroidJson.getString("name")
             val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
             val hazardous = asteroidJson.getBoolean("is_potentially_hazardous_asteroid")
-            val asteroid = NeoJSONData(id,key,codename, absoluteMagnitude,hazardous)
+
+
+            val asteroid = NeoJSONData(id,key,codename, absoluteMagnitude,hazardous,maxDiameter,
+                "$relative_velocity Km/sec", "$distance_from_earth au"
+            )
             asteroidList.add(asteroid)
         }
         return asteroidList
