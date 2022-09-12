@@ -3,6 +3,7 @@ package com.example.asteroidradar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.example.asteroidradar.databinding.ActivityDetailBinding
 
@@ -11,6 +12,10 @@ class detail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
+        binding.imageButton.setOnClickListener(View.OnClickListener {
+            
+        })
+
         val intent = intent
         val max_dia = intent.getStringExtra("maxDia")
         binding.maxDiaTextView.text=max_dia + " Km"
