@@ -1,9 +1,12 @@
 package com.example.asteroidradar
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.asteroidradar.databinding.ActivityDetailBinding
 
@@ -13,7 +16,23 @@ class detail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         binding.imageButton.setOnClickListener(View.OnClickListener {
-            
+            // build alert dialog
+            val dialogBuilder = AlertDialog.Builder(this)
+
+            // set message of alert dialog
+            dialogBuilder.setMessage(R.string.setMessage)
+                // if the dialog is cancelable
+                .setCancelable(false)
+                .setNegativeButton("ACEPTAR", DialogInterface.OnClickListener {
+                        dialog, id -> dialog.cancel()
+                })
+
+            // create dialog box
+            val alert = dialogBuilder.create()
+            // set title for alert dialog box
+            alert.setTitle("AlertDialogExample")
+            // show alert dialog
+            alert.show()
         })
 
         val intent = intent
